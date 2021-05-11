@@ -10,4 +10,30 @@
 
 \# Next, simply copy the entire blob of text below and paste into the PowerShell window.
 
-New-Item -ItemType directory -Path "$($env:USERPROFILE)\Desktop\\$env:computername Server Audit" ; Net LocalGroup Administrators | Out-File "$($env:USERPROFILE)\Desktop\\$env:computername Server Audit\1.Local_Admins.txt" ; net user guest | Out-File "$($env:USERPROFILE)\Desktop\\$env:computername Server Audit\2.Guests.txt" ; systeminfo | Out-File "$($env:USERPROFILE)\Desktop\\$env:computername Server Audit\3.SysteminfoandUpdates.txt" ; wmic qfe list | Out-File "$($env:USERPROFILE)\Desktop\\$env:computername Server Audit\3.SysteminfoandUpdates.txt" -append ; gpresult -h "$($env:USERPROFILE)\Desktop\\$env:computername Server Audit\4.ServerFollowedGPOs.html" ; vaultcmd /listschema | Out-File "$($env:USERPROFILE)\Desktop\\$env:computername Server Audit\5.CredentialManager.txt" ; vaultcmd /list | Out-File "$($env:USERPROFILE)\Desktop\\$env:computername Server Audit\5.CredentialManager.txt" -append ; net share | Out-File "$($env:USERPROFILE)\Desktop\\$env:computername Server Audit\6.Shares.txt" ; dir C:\Users | Out-File "$($env:USERPROFILE)\Desktop\\$env:computername Server Audit\7.UsersOnHost.txt" ; netsh advfirewall show allprofiles | Out-File "$($env:USERPROFILE)\Desktop\\$env:computername Server Audit\8.WindowsFirewall.txt" ; powercfg /A | Out-File "$($env:USERPROFILE)\Desktop\\$env:computername Server Audit\9.SleepMode.txt" ; ipconfig /all | Out-File "$($env:USERPROFILE)\Desktop\\$env:computername Server Audit\10.BridgedAdapters.txt" ; auditpol.exe /get /category:* | Out-File "$($env:USERPROFILE)\Desktop\\$env:computername Server Audit\11.AuditPolicySettings.txt"
+New-Item -ItemType directory -Path "$($env:USERPROFILE)\Desktop\\$env:computername Server Audit" ;
+
+Net LocalGroup Administrators | Out-File "$($env:USERPROFILE)\Desktop\\$env:computername Server Audit\1.Local_Admins.txt" ;
+
+net user guest | Out-File "$($env:USERPROFILE)\Desktop\\$env:computername Server Audit\2.Guests.txt" ;
+
+systeminfo | Out-File "$($env:USERPROFILE)\Desktop\\$env:computername Server Audit\3.SysteminfoandUpdates.txt" ;
+
+wmic qfe list | Out-File "$($env:USERPROFILE)\Desktop\\$env:computername Server Audit\3.SysteminfoandUpdates.txt" -append ;
+
+gpresult -h "$($env:USERPROFILE)\Desktop\\$env:computername Server Audit\4.ServerFollowedGPOs.html" ;
+
+vaultcmd /listschema | Out-File "$($env:USERPROFILE)\Desktop\\$env:computername Server Audit\5.CredentialManager.txt" ;
+
+vaultcmd /list | Out-File "$($env:USERPROFILE)\Desktop\\$env:computername Server Audit\5.CredentialManager.txt" -append ;
+
+net share | Out-File "$($env:USERPROFILE)\Desktop\\$env:computername Server Audit\6.Shares.txt" ;
+
+dir C:\Users | Out-File "$($env:USERPROFILE)\Desktop\\$env:computername Server Audit\7.UsersOnHost.txt" ;
+
+netsh advfirewall show allprofiles | Out-File "$($env:USERPROFILE)\Desktop\\$env:computername Server Audit\8.WindowsFirewall.txt" ;
+
+powercfg /A | Out-File "$($env:USERPROFILE)\Desktop\\$env:computername Server Audit\9.SleepMode.txt" ;
+
+ipconfig /all | Out-File "$($env:USERPROFILE)\Desktop\\$env:computername Server Audit\10.BridgedAdapters.txt" ;
+
+auditpol.exe /get /category:* | Out-File "$($env:USERPROFILE)\Desktop\\$env:computername Server Audit\11.AuditPolicySettings.txt"
