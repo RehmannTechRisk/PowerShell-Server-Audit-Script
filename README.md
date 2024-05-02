@@ -10,6 +10,7 @@
 
 \# Next, simply copy the entire blob of text below and paste into the PowerShell window.
 
+'''
 New-Item -ItemType directory -Path "$($env:USERPROFILE)\Desktop\\$env:computername Server Audit" ;
 
 Net LocalGroup Administrators | Out-File "$($env:USERPROFILE)\Desktop\\$env:computername Server Audit\1.Local_Admins.txt" ;
@@ -39,3 +40,4 @@ ipconfig /all | Out-File "$($env:USERPROFILE)\Desktop\\$env:computername Server 
 auditpol.exe /get /category:* | Out-File "$($env:USERPROFILE)\Desktop\\$env:computername Server Audit\11.AuditPolicySettings.txt"
 
 Get-WinEvent -FilterHashtable @{logname = ‘setup’} | Export-CSV "$($env:USERPROFILE)\Desktop\\$env:computername Server Audit\12.Patches.csv"
+'''
