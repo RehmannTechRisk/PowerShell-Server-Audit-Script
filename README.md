@@ -37,3 +37,5 @@ powercfg /A | Out-File "$($env:USERPROFILE)\Desktop\\$env:computername Server Au
 ipconfig /all | Out-File "$($env:USERPROFILE)\Desktop\\$env:computername Server Audit\10.BridgedAdapters.txt" ;
 
 auditpol.exe /get /category:* | Out-File "$($env:USERPROFILE)\Desktop\\$env:computername Server Audit\11.AuditPolicySettings.txt"
+
+Get-WinEvent -FilterHashtable @{logname = ‘setup’} | Export-CSV "$($env:USERPROFILE)\Desktop\\$env:computername Server Audit\12.Patches.csv"
