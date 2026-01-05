@@ -11,38 +11,36 @@
 \# Next, simply copy the entire blob of text below and paste into the PowerShell window.
 
 ```
-$path = "C:\\temp\\$env:computername WS Audit"
+$path = "C:\\temp\\$env:computername Server Audit"
 New-Item -ItemType directory -Path $path
 
-Net LocalGroup Administrators | Out-File "$path\1.Local_Admins.txt" ;
+Net LocalGroup Administrators | Out-File "path\1.Local_Admins.txt" ;
 
-systeminfo | Out-File "$path\2.SysteminfoandUpdates.txt" ;
+net user guest | Out-File "path\2.Guests.txt" ;
 
-Get-HotFix | Format-table -property Caption, HotFixID, InstalledOn | Out-File "$path\2.SysteminfoandUpdates.txt" -append ;
+systeminfo | Out-File "path\3.SysteminfoandUpdates.txt" ;
 
-gpresult -h "$path\3.WorkstationFollowedGPOs.html" ; 
+Get-HotFix | Format-table -property Caption, HotFixID, InstalledOn | Out-File "path\3.SysteminfoandUpdates.txt" -append ;
 
-Get-CimInstance -Namespace root/SecurityCenter2 -ClassName AntivirusProduct | Out-File "$path\4.Antivirus.txt" ;
+gpresult -h "path\4.ServerFollowedGPOs.html" ;
 
-manage-bde -status | Out-File "$path\5.Bitlocker.txt" ;
+vaultcmd /listschema | Out-File "path\5.CredentialManager.txt" ;
 
-vaultcmd /listschema | Out-File "$path\6.CredentialManager.txt" ;
+vaultcmd /list | Out-File "path\5.CredentialManager.txt" -append ;
 
-vaultcmd /list | Out-File "$path\6.CredentialManager.txt" -append ;
+net share | Out-File "path\6.Shares.txt" ;
 
-Get-CimInstance -ClassName Win32_Product | Select-Object Name, Version | Out-File "$path\7.InstalledSoftware.txt" ;
+dir C:\Users | Out-File "path\7.UsersOnHost.txt" ;
 
-net share | Out-File "$path\8.Shares.txt" ;
+netsh advfirewall show allprofiles | Out-File "path\8.WindowsFirewall.txt" ;
 
-dir C:\Users | Out-File "$path\9.UsersOnHost.txt" ;
+powercfg /A | Out-File "path\9.SleepMode.txt" ;
 
-netsh advfirewall show allprofiles | Out-File "$path\10.WindowsFirewall.txt" ;
+ipconfig /all | Out-File "path\10.BridgedAdapters.txt" ;
 
-powercfg /A | Out-File "$path\11.SleepMode.txt" ;
+auditpol.exe /get /category:* | Out-File "path\11.AuditPolicySettings.txt"
 
-ipconfig /all | Out-File "$path\12.BridgedAdapters.txt"
-
-Get-WinEvent -FilterHashtable @{logname = ‘setup’} | Export-CSV "$path\13.Patches.csv"
+Get-WinEvent -FilterHashtable @{logname = ‘setup’} | Export-CSV "path\12.Patches.csv"
 
 $zipPath = "$path.zip"
 Compress-Archive -Path $path -DestinationPath $zipPath
