@@ -1,33 +1,35 @@
-$path = "C:\\temp\\$env:computername Server Audit"
+$path = "C:\\temp\\$env:computername WS Audit"
 New-Item -ItemType directory -Path $path
 
-Net LocalGroup Administrators | Out-File "path\1.Local_Admins.txt" ;
+Net LocalGroup Administrators | Out-File "$path\1.Local_Admins.txt" ;
 
-net user guest | Out-File "path\2.Guests.txt" ;
+systeminfo | Out-File "$path\2.SysteminfoandUpdates.txt" ;
 
-systeminfo | Out-File "path\3.SysteminfoandUpdates.txt" ;
+Get-HotFix | Format-table -property Caption, HotFixID, InstalledOn | Out-File "$path\2.SysteminfoandUpdates.txt" -append ;
 
-wmic qfe list | Out-File "path\3.SysteminfoandUpdates.txt" -append ;
+gpresult -h "$path\3.WorkstationFollowedGPOs.html" ; 
 
-gpresult -h "path\4.ServerFollowedGPOs.html" ;
+Get-CimInstance -Namespace root/SecurityCenter2 -ClassName AntivirusProduct | Out-File "$path\4.Antivirus.txt" ;
 
-vaultcmd /listschema | Out-File "path\5.CredentialManager.txt" ;
+manage-bde -status | Out-File "$path\5.Bitlocker.txt" ;
 
-vaultcmd /list | Out-File "path\5.CredentialManager.txt" -append ;
+vaultcmd /listschema | Out-File "$path\6.CredentialManager.txt" ;
 
-net share | Out-File "path\6.Shares.txt" ;
+vaultcmd /list | Out-File "$path\6.CredentialManager.txt" -append ;
 
-dir C:\Users | Out-File "path\7.UsersOnHost.txt" ;
+Get-CimInstance -ClassName Win32_Product | Select-Object Name, Version | Out-File "$path\7.InstalledSoftware.txt" ;
 
-netsh advfirewall show allprofiles | Out-File "path\8.WindowsFirewall.txt" ;
+net share | Out-File "$path\8.Shares.txt" ;
 
-powercfg /A | Out-File "path\9.SleepMode.txt" ;
+dir C:\Users | Out-File "$path\9.UsersOnHost.txt" ;
 
-ipconfig /all | Out-File "path\10.BridgedAdapters.txt" ;
+netsh advfirewall show allprofiles | Out-File "$path\10.WindowsFirewall.txt" ;
 
-auditpol.exe /get /category:* | Out-File "path\11.AuditPolicySettings.txt"
+powercfg /A | Out-File "$path\11.SleepMode.txt" ;
 
-Get-WinEvent -FilterHashtable @{logname = ‘setup’} | Export-CSV "path\12.Patches.csv"
+ipconfig /all | Out-File "$path\12.BridgedAdapters.txt"
+
+Get-WinEvent -FilterHashtable @{logname = ‘setup’} | Export-CSV "$path\13.Patches.csv"
 
 $zipPath = "$path.zip"
 Compress-Archive -Path $path -DestinationPath $zipPath
